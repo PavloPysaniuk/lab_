@@ -1,10 +1,25 @@
-#Lab_6_check.py
-from estimated import estimate_file #з папки estimated "взяти" файл estimate_file
-a=1.0
-b=1.0
-m=1.0
-a=float(input(" a ="))
-m=float(input("  m ="))
-b=float(input("   b = "))
-es=estimate_file.estimatec(a, m, b) #створюємо екземпляр es класу estimatec (викликається функція __init__ з параметрами a, m, b)
-es.do_estimate() #викликаємо функцію do_estimate
+import math
+
+def num(a, m, b):
+    E = (a + 4*m + b) / 6
+    SD = (b - a) / 6
+    return E, SD
+
+tasks = []
+while True:
+    a = float(input("Enter the 'a' number (or enter '0' to finish): "))
+    if a == 0:
+        break
+    m = float(input("Enter the 'm' number: "))
+    b = float(input("Enter the 'b' number: "))
+    tasks.append((a, m, b))
+
+E_tasks, SD_tasks = zip(*[num(*task) for task in tasks])
+
+E_project = sum(E_tasks)
+SD_project = math.sqrt(sum(sd**2 for sd in SD_tasks))
+
+CI_min = E_project - 2*SD_project
+CI_max = E_project + 2*SD_project
+
+print(f"Project's 95% confidence interval: {CI_min:.2f} ... {CI_max:.2f} points")
